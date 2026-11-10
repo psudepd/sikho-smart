@@ -305,7 +305,7 @@ with tabs[0]:
             st.session_state.q_score = 0
             st.session_state.last_result = None
             st.rerun()
-    st.selectbox(t["class"], ["Class 1", "Class 2", "Class 3", "Class 4", "Class 5"], key="grade")
+    st.selectbox(t["class"], ["Class 1", "Class 2", "Class 3", "Class 4", "Class 5"], key="grade_home")
     st.caption(t["offline"])
 
 # ============================================================
@@ -313,8 +313,8 @@ with tabs[0]:
 # ============================================================
 with tabs[1]:
     st.title("🎯 " + t["quiz"])
-    # Single shared grade widget — no duplicate key, no session_state overwrite
-    st.selectbox(t["class"], ["Class 1", "Class 2", "Class 3", "Class 4", "Class 5"], key="grade")
+    # Single shared grade widget — unique key per tab to avoid StreamlitDuplicateElementKey
+    st.selectbox(t["class"], ["Class 1", "Class 2", "Class 3", "Class 4", "Class 5"], key="grade_quiz")
 
     if st.session_state.quiz_lang != lang:
         st.session_state.quiz_items = get_qset(st.session_state.chosen_subject, lang)
