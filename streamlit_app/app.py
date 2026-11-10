@@ -135,116 +135,267 @@ def init_state():
         if k not in st.session_state: st.session_state[k]=v
 init_state()
 
-# Friendly visual styling
+# ---------- Kid-friendly visual styling ----------
 st.markdown("""
 <style>
-.stApp{background:linear-gradient(145deg,#fff7ed 0%,#eff6ff 48%,#f0fdf4 100%)}
-.block-container{max-width:850px;padding-top:1.1rem;padding-bottom:2rem}
-.hero{background:linear-gradient(115deg,#3b1678,#1d4ed8);color:white;border-radius:24px;padding:22px 20px;text-align:center;box-shadow:0 8px 22px #312e8122}
-.hero h1{font-size:clamp(2rem,6vw,3rem);font-weight:950;margin:0}
-.hero p{color:#fde68a;font-weight:750;margin:.3rem 0}
-.stButton>button{border-radius:14px;font-weight:800;min-height:2.8rem;border:1px solid #c4b5fd}
-div[data-testid="stMetric"]{background:#fff;border:1px solid #e9d5ff;padding:12px;border-radius:15px}
-div[data-testid="stChatMessage"]{border-radius:15px}
-.smallnote{font-size:.82rem;color:#64748b}
+@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Nunito:wght@600;800&display=swap');
+
+.stApp {
+    background: linear-gradient(160deg, #fef3c7 0%, #dbeafe 35%, #dcfce7 70%, #fce7f3 100%);
+    font-family: 'Nunito', sans-serif;
+}
+.block-container { max-width: 880px; padding-top: 1rem; padding-bottom: 2.5rem; }
+
+/* Hero banner */
+.hero {
+    background: linear-gradient(120deg, #7c3aed, #2563eb, #06b6d4);
+    color: white;
+    border-radius: 32px;
+    padding: 28px 20px;
+    text-align: center;
+    box-shadow: 0 12px 30px rgba(37, 99, 235, 0.35);
+    animation: floaty 4s ease-in-out infinite;
+}
+@keyframes floaty {
+    0%,100% { transform: translateY(0); }
+    50%     { transform: translateY(-6px); }
+}
+.hero h1 {
+    font-family: 'Baloo 2', cursive;
+    font-size: clamp(2.2rem, 6vw, 3.4rem);
+    font-weight: 800;
+    margin: 0;
+    text-shadow: 3px 3px 0 rgba(0,0,0,0.18);
+    letter-spacing: 1px;
+}
+.hero p {
+    color: #fef08a;
+    font-weight: 800;
+    margin: .4rem 0 .2rem;
+    font-size: 1.05rem;
+}
+.hero small { color: #e0f2fe; font-weight: 600; }
+
+/* Metric cards */
+div[data-testid="stMetric"] {
+    background: white;
+    border: 3px solid #c4b5fd;
+    padding: 14px 10px;
+    border-radius: 20px;
+    box-shadow: 0 6px 0 #ddd6fe;
+    text-align: center;
+}
+div[data-testid="stMetric"] label { font-weight: 800 !important; color: #6d28d9 !important; }
+div[data-testid="stMetric"] div  { font-family: 'Baloo 2', cursive; }
+
+/* Buttons */
+.stButton > button {
+    border-radius: 18px;
+    font-weight: 800;
+    font-family: 'Nunito', sans-serif;
+    min-height: 3rem;
+    font-size: 1.02rem;
+    border: 3px solid #a78bfa;
+    background: white;
+    color: #4c1d95;
+    transition: all .15s ease;
+    box-shadow: 0 4px 0 #c4b5fd;
+}
+.stButton > button:hover {
+    transform: translateY(-2px);
+    background: #f5f3ff;
+    box-shadow: 0 6px 0 #a78bfa;
+}
+.stButton > button:active {
+    transform: translateY(2px);
+    box-shadow: 0 2px 0 #a78bfa;
+}
+
+/* Tabs */
+button[data-baseweb="tab"] {
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.05rem !important;
+    font-weight: 800 !important;
+    border-radius: 14px 14px 0 0;
+}
+
+/* Radio options — big tap targets */
+div[role="radiogroup"] label {
+    background: white;
+    border: 3px solid #fbcfe8;
+    border-radius: 16px;
+    padding: 12px 16px !important;
+    margin-bottom: 8px !important;
+    font-weight: 700;
+    transition: all .15s ease;
+    cursor: pointer;
+}
+div[role="radiogroup"] label:hover {
+    border-color: #f472b6;
+    transform: scale(1.02);
+}
+
+/* Progress bar */
+.stProgress > div > div > div > div {
+    background: linear-gradient(90deg, #34d399, #06b6d4, #8b5cf6) !important;
+    border-radius: 12px !important;
+    height: 14px !important;
+}
+
+/* Chat bubbles */
+div[data-testid="stChatMessage"] {
+    border-radius: 20px;
+    padding: 12px;
+    margin-bottom: 8px;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.06);
+}
+
+/* Alerts */
+div[data-testid="stAlert"] {
+    border-radius: 16px;
+    font-weight: 700;
+}
+
+/* Headings */
+h1, h2, h3 { font-family: 'Baloo 2', cursive !important; color: #1e293b !important; }
 </style>
 """, unsafe_allow_html=True)
 
 lang = st.sidebar.selectbox("🌐 Language / ٻولي / زبان", list(I18N.keys()), index=0)
 t = I18N[lang]
-st.markdown(f'<div class="hero"><h1>🌟 SIKHO SMART 🤖</h1><p>{t["tag"]}</p><div>G.G.H.S. Phuleli, Hyderabad · Classes 1–5</div></div>', unsafe_allow_html=True)
+
+# ---------- Hero banner ----------
+st.markdown(
+    f'<div class="hero">'
+    f'<h1>🌟 SIKHO SMART 🤖</h1>'
+    f'<p>{t["tag"]}</p>'
+    f'<small>🏫 G.G.H.S. Phuleli, Hyderabad &nbsp;•&nbsp; 📚 Classes 1–5</small>'
+    f'</div>',
+    unsafe_allow_html=True
+)
 st.caption("AI & Digital Solutions · Stream Muqablo 2026–27")
 
-c1,c2,c3=st.columns(3)
-c1.metric("⭐ "+t["stars"],st.session_state.stars)
-c2.metric("🏆 "+t["points"],st.session_state.points)
-c3.metric("📚 "+t["progress"],st.session_state.answered)
+# ---------- Metrics ----------
+c1, c2, c3 = st.columns(3)
+c1.metric("⭐ " + t["stars"],    st.session_state.stars)
+c2.metric("🏆 " + t["points"],   st.session_state.points)
+c3.metric("📚 " + t["progress"], st.session_state.answered)
 
-tabs=st.tabs(["🏠 "+t["home"],"🎮 "+t["quiz"],"🤖 "+t["friend"],"👩‍🏫 "+t["teacher"]])
+tabs = st.tabs(["🏠 " + t["home"], "🎮 " + t["quiz"], "🤖 " + t["friend"], "👩‍🏫 " + t["teacher"]])
 
+# ============================================================
+# HOME TAB
+# ============================================================
 with tabs[0]:
     st.title(t["welcome"])
     st.write(t["intro"])
     st.info(t["privacy"])
-    st.write("### "+t["subject"])
+    st.write("### " + t["subject"])
     display_subjects = list(zip(BANK.keys(), t["subjects"]))
-    cols=st.columns(2)
-    for i,(key,label) in enumerate(display_subjects):
-        if cols[i%2].button(["➗ ","🔤 ","🔬 ","🌍 "][i]+label, key="home_"+key, use_container_width=True):
-            st.session_state.chosen_subject=key
-            st.session_state.quiz_items=get_qset(key,lang)
-            st.session_state.quiz_lang=lang
-            st.session_state.q_index=0;st.session_state.q_score=0;st.session_state.last_result=None
+    cols = st.columns(2)
+    for i, (key, label) in enumerate(display_subjects):
+        if cols[i % 2].button(
+            ["➗ Maths", "🔤 English", "🔬 Science", "🌍 GK"][i] + " • " + label,
+            key="home_" + key, use_container_width=True
+        ):
+            st.session_state.chosen_subject = key
+            st.session_state.quiz_items = get_qset(key, lang)
+            st.session_state.quiz_lang = lang
+            st.session_state.q_index = 0
+            st.session_state.q_score = 0
+            st.session_state.last_result = None
             st.rerun()
-    st.selectbox(t["class"],["Class 1","Class 2","Class 3","Class 4","Class 5"],key="grade")
+    st.selectbox(t["class"], ["Class 1", "Class 2", "Class 3", "Class 4", "Class 5"], key="grade")
     st.caption(t["offline"])
 
+# ============================================================
+# QUIZ TAB  (grade widget bug fixed)
+# ============================================================
 with tabs[1]:
-    st.title("🎯 "+t["quiz"])
-    st.selectbox(t["class"],["Class 1","Class 2","Class 3","Class 4","Class 5"],key="grade_quiz")
-    st.session_state.grade=st.session_state.grade_quiz
+    st.title("🎯 " + t["quiz"])
+    # Single shared grade widget — no duplicate key, no session_state overwrite
+    st.selectbox(t["class"], ["Class 1", "Class 2", "Class 3", "Class 4", "Class 5"], key="grade")
+
     if st.session_state.quiz_lang != lang:
-        st.session_state.quiz_items=get_qset(st.session_state.chosen_subject,lang)
-        st.session_state.q_index=0; st.session_state.q_score=0; st.session_state.last_result=None
-        st.session_state.quiz_lang=lang
-    labels=t["subjects"]
-    subject_label=st.selectbox(t["subject"],labels,index=list(BANK.keys()).index(st.session_state.chosen_subject))
-    subject=list(BANK.keys())[labels.index(subject_label)]
+        st.session_state.quiz_items = get_qset(st.session_state.chosen_subject, lang)
+        st.session_state.q_index = 0
+        st.session_state.q_score = 0
+        st.session_state.last_result = None
+        st.session_state.quiz_lang = lang
+
+    labels = t["subjects"]
+    subject_label = st.selectbox(t["subject"], labels, index=list(BANK.keys()).index(st.session_state.chosen_subject))
+    subject = list(BANK.keys())[labels.index(subject_label)]
     if subject != st.session_state.chosen_subject or not st.session_state.quiz_items:
-        st.session_state.chosen_subject=subject
-        st.session_state.quiz_lang=lang
-        st.session_state.quiz_items=get_qset(subject,lang)
-        st.session_state.quiz_lang=lang
-        st.session_state.q_index=0;st.session_state.q_score=0;st.session_state.last_result=None
-    if st.button("🔄 "+t["start"],use_container_width=True):
-        st.session_state.quiz_items=get_qset(subject,lang)
-        st.session_state.quiz_lang=lang
-        st.session_state.q_index=0;st.session_state.q_score=0;st.session_state.last_result=None
+        st.session_state.chosen_subject = subject
+        st.session_state.quiz_lang = lang
+        st.session_state.quiz_items = get_qset(subject, lang)
+        st.session_state.q_index = 0
+        st.session_state.q_score = 0
+        st.session_state.last_result = None
+
+    if st.button("🔄 " + t["start"], use_container_width=True):
+        st.session_state.quiz_items = get_qset(subject, lang)
+        st.session_state.quiz_lang = lang
+        st.session_state.q_index = 0
+        st.session_state.q_score = 0
+        st.session_state.last_result = None
         st.rerun()
-    items=st.session_state.quiz_items
+
+    items = st.session_state.quiz_items
     if items and st.session_state.last_result is None:
-        idx=st.session_state.q_index
+        idx = st.session_state.q_index
         if idx < len(items):
-            q=items[idx]
-            st.progress(idx/len(items),text=f"{idx+1} / {len(items)}")
+            q = items[idx]
+            st.progress(idx / len(items), text=f"{idx+1} / {len(items)}")
             st.subheader(q[0])
-            st.caption("💡 "+q[3])
-            answer=st.radio("Choose one answer",q[1],index=None,key=f"ans_{lang}_{subject}_{st.session_state.grade}_{idx}")
-            if st.button("✅ "+t["submit"],disabled=answer is None,key=f"submit_{idx}"):
-                if q[1].index(answer)==q[2]:
-                    st.session_state.q_score+=10
-                    st.session_state.points+=10
-                    st.session_state.stars+=1
-                    st.success(t["correct"])
+            st.caption("💡 " + q[3])
+            answer = st.radio("Choose one answer", q[1], index=None,
+                              key=f"ans_{lang}_{subject}_{st.session_state.grade}_{idx}")
+            if st.button("✅ " + t["submit"], disabled=answer is None, key=f"submit_{idx}"):
+                if q[1].index(answer) == q[2]:
+                    st.session_state.q_score += 10
+                    st.session_state.points += 10
+                    st.session_state.stars += 1
+                    st.balloons()
+                    st.success("🎉 " + t["correct"])
                 else:
-                    st.warning(t["wrong"])
-                st.info(q[4])
-                st.session_state.answered+=1
-                st.session_state.q_index+=1
-                if st.session_state.q_index>=len(items):
-                    st.session_state.last_result=st.session_state.q_score
+                    st.warning("💪 " + t["wrong"])
+                st.info("💡 " + q[4])
+                st.session_state.answered += 1
+                st.session_state.q_index += 1
+                if st.session_state.q_index >= len(items):
+                    st.session_state.last_result = st.session_state.q_score
                 st.rerun()
         else:
-            st.session_state.last_result=st.session_state.q_score
+            st.session_state.last_result = st.session_state.q_score
+
     if st.session_state.last_result is not None:
         st.balloons()
         st.success(t["finished"])
-        st.metric(t["score"],f'{st.session_state.last_result} / {len(items)*10}')
-        if st.button("🔁 "+t["start"],key="restart_finished"):
-            st.session_state.q_index=0;st.session_state.q_score=0;st.session_state.last_result=None
+        st.metric(t["score"], f'{st.session_state.last_result} / {len(items)*10}')
+        if st.button("🔁 " + t["start"], key="restart_finished"):
+            st.session_state.q_index = 0
+            st.session_state.q_score = 0
+            st.session_state.last_result = None
             st.rerun()
 
+# ============================================================
+# SIKHO DOST (AI) TAB
+# ============================================================
 with tabs[2]:
-    st.title("🤖 "+t["ask"])
+    st.title("🤖 " + t["ask"])
     st.write(t["privacy"])
     st.caption(t["ai_note"])
     for msg in st.session_state.chat_history:
-        with st.chat_message(msg["role"]): st.write(msg["content"])
-    prompt=st.chat_input(t["placeholder"])
+        with st.chat_message(msg["role"]):
+            st.write(msg["content"])
+    prompt = st.chat_input(t["placeholder"])
     if prompt:
-        # Basic guardrail: avoid sending obvious contact details to the AI service.
-        contains_contact = bool(re.search(r"\b[\w.+-]+@[\w.-]+\.[A-Za-z]{2,}\b", prompt) or
-                                re.search(r"(?:\+?\d[\d\s().-]{7,}\d)", prompt))
+        contains_contact = bool(
+            re.search(r"\b[\w.+-]+@[\w.-]+\.[A-Za-z]{2,}\b", prompt) or
+            re.search(r"(?:\+?\d[\d\s().-]{7,}\d)", prompt)
+        )
         if contains_contact:
             st.warning("Please do not share phone numbers or email addresses. Keep personal information private and ask a trusted teacher for help.")
             st.stop()
@@ -252,47 +403,53 @@ with tabs[2]:
         if st.session_state.chat_count > 15:
             st.warning("This demo has a small daily-style chat limit per session. Please continue learning with the quiz or ask your teacher.")
             st.stop()
-        st.session_state.chat_history.append({"role":"user","content":prompt})
-        answer=None
+        st.session_state.chat_history.append({"role": "user", "content": prompt})
+        answer = None
         api_key = None
         try:
-            api_key=st.secrets.get("OPENAI_API_KEY",None)
+            api_key = st.secrets.get("OPENAI_API_KEY", None)
         except Exception:
-            api_key=os.environ.get("OPENAI_API_KEY")
+            api_key = os.environ.get("OPENAI_API_KEY")
         if api_key:
             try:
                 from openai import OpenAI
-                client=OpenAI(api_key=api_key)
-                language_name={"English":"English","سنڌي":"Sindhi","اردو":"Urdu"}[lang]
-                response=client.responses.create(
-                    model=os.getenv("OPENAI_MODEL","gpt-4.1-mini"),
-                    instructions=("You are Sikho Dost, a kind, age-appropriate learning helper for children in Classes 1-5. "
-                    f"Reply in {language_name}, using short simple sentences and step-by-step explanations. "
-                    "Do not ask for personal information. If a child shares personal information, gently tell them not to share it "
-                    "and to speak with a trusted teacher or guardian. Decline dangerous, sexual, violent or self-harm requests. "
-                    "If unsure, say so and suggest asking a teacher. AI can make mistakes."),
+                client = OpenAI(api_key=api_key)
+                language_name = {"English": "English", "سنڌي": "Sindhi", "اردو": "Urdu"}[lang]
+                response = client.responses.create(
+                    model=os.getenv("OPENAI_MODEL", "gpt-4.1-mini"),
+                    instructions=(
+                        "You are Sikho Dost, a kind, age-appropriate learning helper for children in Classes 1-5. "
+                        f"Reply in {language_name}, using short simple sentences and step-by-step explanations. "
+                        "Do not ask for personal information. If a child shares personal information, gently tell them not to share it "
+                        "and to speak with a trusted teacher or guardian. Decline dangerous, sexual, violent or self-harm requests. "
+                        "If unsure, say so and suggest asking a teacher. AI can make mistakes."
+                    ),
                     input=prompt,
                     max_output_tokens=250
                 )
-                answer=response.output_text
+                answer = response.output_text
             except Exception:
-                answer="Sikho Dost is temporarily unavailable. Please ask your teacher and try again later."
+                answer = "Sikho Dost is temporarily unavailable. Please ask your teacher and try again later."
         else:
-            answer=t["no_ai"]
-        st.session_state.chat_history.append({"role":"assistant","content":answer})
+            answer = t["no_ai"]
+        st.session_state.chat_history.append({"role": "assistant", "content": answer})
         st.rerun()
 
+# ============================================================
+# TEACHER TAB
+# ============================================================
 with tabs[3]:
-    st.title("👩‍🏫 "+t["teacher"])
+    st.title("👩‍🏫 " + t["teacher"])
     st.write(t["teacher_note"])
     st.info("This public prototype does not collect student names or personal records.")
-    st.metric("Questions in starter bank",sum(len(v) for v in BANK.values()))
-    st.metric("Subjects",len(BANK))
-    st.metric("Languages",3)
+    st.metric("Questions in starter bank", sum(len(v) for v in BANK.values()))
+    st.metric("Subjects", len(BANK))
+    st.metric("Languages", 3)
     st.warning("Current prototype: question content is a starter set; class-specific question difficulty, central student records and teacher analytics are future upgrades.")
     if st.button("Reset this browser session progress"):
-        for k in ["stars","points","answered","quiz_items","q_index","q_score","last_result","chat_history"]:
-            if k in st.session_state: del st.session_state[k]
+        for k in ["stars", "points", "answered", "quiz_items", "q_index", "q_score", "last_result", "chat_history"]:
+            if k in st.session_state:
+                del st.session_state[k]
         st.rerun()
 
 st.divider()
